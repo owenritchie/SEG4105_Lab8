@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HiveCheck Dashboard</title>
+  <style>
+    body { font-family: -apple-system, Helvetica, Arial, sans-serif; margin: 2rem; color: #222; }
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid #ccc; padding: 6px 12px; text-align: left; }
+    th { background: #f2f2f2; }
+    .ALERT { color: #b00020; font-weight: bold; }
+    .WATCH { color: #b36b00; font-weight: bold; }
+    .OK { color: #1b6e20; }
+  </style>
+</head>
+<body>
+  <h1>HiveCheck - Rideau Valley Orchards</h1>
+  <p>{{ passing }} of {{ hives|length }} hives meet the 8-frame contract standard.</p>
+  <table>
+    <tr><th>Hive</th><th>Beekeeper</th><th>Last reading</th><th>Est. frames</th><th>Status</th></tr>
+    {% for h in hives %}
+    <tr>
+      <td>{{ h.hive_id }}</td><td>{{ h.beekeeper }}</td><td>{{ h.taken_at }}</td>
+      <td>{{ h.frames }}</td><td class="{{ h.status }}">{{ h.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
