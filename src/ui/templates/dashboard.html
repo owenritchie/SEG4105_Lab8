@@ -2,28 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HiveCheck Dashboard</title>
   <style>
-    body { font-family: -apple-system, Helvetica, Arial, sans-serif; margin: 2rem; color: #222; }
-    table { border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 6px 12px; text-align: left; }
-    th { background: #f2f2f2; }
-    .ALERT { color: #b00020; font-weight: bold; }
-    .WATCH { color: #b36b00; font-weight: bold; }
-    .OK { color: #1b6e20; }
+    :root {
+      --honey: #f5b301;
+      --honey-dark: #c98f00;
+      --cream: #fff8e1;
+      --ink: #3b2f12;
+      --muted: #7a6a3f;
+      --line: #f0e2b6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1rem;
+      font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ffe9a8 0%, var(--cream) 60%);
+    }
+    .card {
+      width: 100%;
+      max-width: 820px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(120, 85, 0, 0.15);
+      overflow: hidden;
+      text-align: center;
+    }
+    header {
+      background: var(--honey);
+      padding: 1.75rem 1.5rem 1.5rem;
+    }
+    h1 { margin: 0; font-size: 1.8rem; letter-spacing: 0.2px; }
+    .summary { margin: 0.5rem 0 0; color: var(--ink); opacity: 0.8; }
+    .table-wrap { padding: 1.5rem; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { padding: 0.75rem 1rem; text-align: center; }
+    th {
+      background: var(--cream);
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--honey);
+    }
+    td { border-bottom: 1px solid var(--line); }
+    tbody tr:nth-child(even) { background: #fffcf2; }
+    tbody tr:hover { background: #fff3c4; }
+    td.hive { font-weight: 600; }
+    td.num { font-variant-numeric: tabular-nums; }
+    .badge {
+      display: inline-block;
+      min-width: 70px;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+    .OK { background: #e3f4e1; color: #1b6e20; }
+    .WATCH { background: #fff0c2; color: #8a5a00; }
+    .ALERT { background: #fde2e1; color: #b00020; }
   </style>
 </head>
 <body>
-  <h1>HiveCheck - Rideau Valley Orchards</h1>
-  <p>{{ passing }} of {{ hives|length }} hives meet the 8-frame contract standard.</p>
-  <table>
-    <tr><th>Hive</th><th>Beekeeper</th><th>Last reading</th><th>Est. frames</th><th>Status</th></tr>
-    {% for h in hives %}
-    <tr>
-      <td>{{ h.hive_id }}</td><td>{{ h.beekeeper }}</td><td>{{ h.taken_at }}</td>
-      <td>{{ h.frames }}</td><td class="{{ h.status }}">{{ h.status }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+  <div class="card">
+    <header>
+      <h1>HiveCheck - Rideau Valley Orchards</h1>
+      <p class="summary">{{ passing }} of {{ hives|length }} hives meet the 8-frame contract standard.</p>
+    </header>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Hive</th><th>Beekeeper</th><th>Last reading</th><th>Est. frames</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {% for h in hives %}
+          <tr>
+            <td class="hive">{{ h.hive_id }}</td><td>{{ h.beekeeper }}</td><td class="num">{{ h.taken_at }}</td>
+            <td class="num">{{ h.frames }}</td><td><span class="badge {{ h.status }}">{{ h.status }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
